@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <div th:replace="~{externals/links::link}"></div>
+        <title th:text="${pageTitle}"></title>
+    </head>
+    <body>
+        <header>
+            <div th:replace="~{fragments/navbar::nav}"></div>
+<!--            <img-->
+<!--                    th:src="@{/icons/cam.png}"-->
+<!--                    height="100"-->
+<!--                    alt="Camera Logo"-->
+<!--                    loading="lazy"-->
+<!--            />-->
+        </header>
+        <main>
+            <form id="searchForm" th:action="@{/movies/search}" method="post">
+                <label for="searchInput">Search:</label>
+                <input type="text" id="searchInput" name="query" placeholder="Enter your search term">
+
+                <button type="submit">Search</button>
+            </form>
+
+            <!-- Check if the user is authenticated and has the 'USER' or 'ADMIN' role -->
+            <div th:if="${#authorization.expression('isAuthenticated() and (hasRole(''ROLE_USER'') or hasRole(''ROLE_ADMIN''))')}">
+                <button onclick="openAddMovieDialog()">Add New Movie</button>
+            </div>
+            <!-- Add Movie Dialog -->
+            <div id="addMovieDialog" class="modal">
+                <div class="modal-content">
+                    <span class="close" onclick="closeAddMovieDialog()">&times;</span>
+                    <!-- Form to add a new movie -->
+                    <form id="addMovieForm" th:action="@{/movies/add}" method="post">
+                        <!-- Add a hidden input field for the movie id -->
+                        <label>Movie Name:</label>
+                        <input type="text" th:name="name" placeholder="Movie Name" required/>
+
+                        <label>Release Date:</label>
+                        <input type="date" th:name="releaseDate" required/>
+
+                        <label>Summary:</label>
+                        <textarea th:name="summary" placeholder="Movie Summary" required></textarea>
+
+                        <label>Categories:</label>
+                        <select multiple="multiple" th:name="categories" th:value="*{categories}" required>
+                            <!-- Iterate over categories and populate the options -->
+                            <option th:each="category : ${categories}" th:value="${category.id}" th:text="${category.name}"></option>
+                        </select>
+
+                        <label>Actors:</label>
+                        <select multiple="multiple" th:name="actors" th:value="*{actors}" required>
+                            <!-- Iterate over actors and populate the options -->
+                            <option th:each="actor : ${actors}" th:value="${actor.id}" th:text="${actor.name} + ' ' + ${actor.surname}"></option>
+                        </select>
+
+                        <button type="submit">Add</button>
+                    </form>
+                </div>
+            </div>
+            <!-- Movie gallery -->
+            <div class="movie-gallery" th:if="${movies}">
+                <div th:each="movie : ${movies}">
+                    <div class="movie-card" th:object="${movie}">
+                        <!-- Add movie details -->
+                        <h4 th:text="*{name}"></h4>
+                        <p th:text="*{releaseDate}"></p>
+                        <details>
+                            <summary>Summary</summary>
+                            <p th:text="*{summary}"></p>
+                        </details>
+                        <details>
+                            <summary>Categories</summary>
+                            <div th:each="category : *{categories}">
+                                <p th:object="${category}" >
+                                    <span th:text="*{name}"></span>
+                                </p>
+                            </div>
+                        </details>
+                        <details>
+                            <summary>Actors</summary>
+                            <div th:each="actor : *{actors}">
+                                <p th:object="${actor}" >
+                                    <span th:text="*{name}"></span>
+                                    <span th:text="*{surname}"></span>
+                                </p>
+                            </div>
+                        </details>
+
+                        <div th:if="${#authorization.expression('isAuthenticated() and (hasRole(''ROLE_USER'') or hasRole(''ROLE_ADMIN''))')}">
+                            <button th:onclick="'openUpdateMovieDialog(' + *{id} + ')'">Update</button>
+                            <div th:id="'updateMovieDialog-' + *{id}" class="modal">
+                                <div class="modal-content">
+                                    <span class="close" th:onclick="'closeUpdateMovieDialog(' + *{id} + ')'">&times;</span>
+                                    <form th:id="'updateMovieForm-' + *{id}" th:action="@{/movies/update}" method="post">
+                                        <!-- Add a hidden input field for the movie id -->
+                                        <input type="hidden" th:name="id" th:value="*{id}" />
+
+                                        <label>Movie Name:</label>
+                                        <input type="text" th:name="name" placeholder="Movie Name" th:value="*{name}" required/>
+
+                                        <label>Release Date:</label>
+                                        <input type="date" th:name="releaseDate" th:value="*{releaseDate}" required/>
+
+                                        <label>Summary:</label>
+                                        <textarea th:name="summary" placeholder="Movie Summary" th:text="*{summary}" required></textarea>
+
+                                        <label>Categories:</label>
+                                        <select multiple="multiple" th:name="categories" th:value="*{categories}" required>
+                                            <!-- Iterate over categories and populate the options -->
+                                            <option th:each="category : ${categories}" th:value="${category.id}" th:text="${category.name}"
+                                                    th:selected="${#lists.contains(movie.categories, category)}"></option>
+                                        </select>
+
+                                        <label>Actors:</label>
+                                        <select multiple="multiple" th:name="actors" th:value="*{actors}" required>
+                                            <!-- Iterate over actors and populate the options -->
+                                            <option th:each="actor : ${actors}" th:value="${actor.id}" th:text="${actor.name} + ' ' + ${actor.surname}"
+                                                    th:selected="${#lists.contains(movie.actors, actor)}"></option>
+                                        </select>
+
+                                        <button type="submit">Update</button>
+                                    </form>
+                                </div>
+                            </div>
+                            <form th:action="@{/movies/delete}" method="post">
+                                <input type="hidden" th:name="id" th:value="*{id}" />
+                                <button type="submit">Delete</button>
+                            </form>
+                        </div>
+
+                    </div>
+
+            </div>
+            <div th:unless="${movies}">
+                <p>No movies available.</p>
+            </div>
+
+            <script>
+                function openAddMovieDialog() {
+                    document.getElementById('addMovieDialog').style.display = 'block';
+                }
+                function closeAddMovieDialog() {
+                    document.getElementById('addMovieDialog').style.display = 'none';
+                }
+                function openUpdateMovieDialog(movieId) {
+                    document.getElementById('updateMovieDialog-' + movieId).style.display = 'block';
+                }
+                function closeUpdateMovieDialog(movieId) {
+                    document.getElementById('updateMovieDialog-' + movieId).style.display = 'none';
+                }
+            </script>
+            </div>
+        </main>
+
+    </body>
+</html>

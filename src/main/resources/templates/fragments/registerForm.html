@@ -1,0 +1,40 @@
+<form th:action="@{/register}" th:object="${user}" method="post">
+    <!-- Email input -->
+    <div data-mdb-input-init class="form-outline mb-4">
+        <input type="email" id="email" class="form-control" placeholder="Your email address" th:field="*{email}" required/>
+    </div>
+
+    <!-- Name input -->
+    <div data-mdb-input-init class="form-outline mb-4">
+        <input type="text" id="name" class="form-control" placeholder="Username" th:field="*{name}" required/>
+    </div>
+
+    <!-- Password input -->
+    <div data-mdb-input-init class="form-outline mb-4">
+        <input type="password" id="password" class="form-control" placeholder="Password" th:field="*{password}" required/>
+    </div>
+
+    <!-- Password Duplication input -->
+    <div data-mdb-input-init class="form-outline mb-4">
+        <input type="password" id="passwordDuplication" class="form-control" placeholder="Password again" th:field="${password2}" required/>
+    </div>
+
+    <!-- 2 column grid layout for inline styling -->
+    <div class="row mb-4">
+        <div class="col d-flex justify-content-center">
+            <!-- Checkbox -->
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="checkboxAgreement" th:value="${agreement}" required/>
+                <label class="form-check-label" for="checkboxAgreement"> I agree </label>
+            </div>
+        </div>
+
+        <div class="col">
+            <!-- Simple link -->
+            <a href="#!">Forgot password?</a>
+        </div>
+    </div>
+
+    <!-- Submit button -->
+    <button data-mdb-ripple-init type="submit" class="btn btn-primary btn-block">Register</button>
+</form>
