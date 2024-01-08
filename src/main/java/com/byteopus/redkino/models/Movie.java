@@ -43,6 +43,19 @@ public class Movie {
     public void setActors(List<Actor> actors) {
         this.actors = actors;
     }
+    @ManyToMany
+    @JoinTable(
+            name = "movie_directors",
+            joinColumns = @JoinColumn(name = "movie_id"),
+            inverseJoinColumns = @JoinColumn(name = "director_id")
+    )
+    private List<Director> directors = new ArrayList<>();
+    public List<Director> getDirectors() {
+        return directors;
+    }
+    public void setDirectors(List<Director> directors) {
+        this.directors = directors;
+    }
     private String name;
     private String summary;
     @Lob

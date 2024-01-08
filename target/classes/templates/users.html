@@ -24,10 +24,10 @@
     </div>
     <!-- Add Movie Dialog -->
     <div id="addUserDialog" class="modal">
-        <div class="modal-content">
+        <div>
             <span class="close" onclick="closeAddUserDialog()">&times;</span>
             <!-- Form to add a new movie -->
-            <form id="addUserForm" th:action="@{/users/add}" method="post">
+            <form class="modal-content" id="addUserForm" th:action="@{/users/add}" method="post">
                 <!-- Add a hidden input field for the movie id -->
                 <label>User Name:</label>
                 <input type="text" th:name="name" placeholder="User Name" required/>
@@ -54,13 +54,14 @@
             <div class="movie-card" th:object="${user}">
                 <!-- Add movie details -->
                 <h4 th:text="*{name}"></h4>
+                <p th:text="*{email}"></p>
 
                 <div th:if="${#authorization.expression('isAuthenticated() and hasRole(''ROLE_ADMIN'')')}">
                     <button th:onclick="'openUpdateUserDialog(' + *{id} + ')'">Update</button>
                     <div th:id="'updateUserDialog-' + *{id}" class="modal">
-                        <div class="modal-content">
+                        <div>
                             <span class="close" th:onclick="'closeUpdateUserDialog(' + *{id} + ')'">&times;</span>
-                            <form th:id="'updateUserForm-' + *{id}" th:action="@{/users/update}" method="post">
+                            <form class="modal-content" th:id="'updateUserForm-' + *{id}" th:action="@{/users/update}" method="post">
                                 <!-- Add a hidden input field for the movie id -->
                                 <input hidden="hidden" th:name="id" th:value="*{id}"/>
 
