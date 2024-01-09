@@ -68,9 +68,8 @@ public class MovieController {
     @PostMapping("/movies/search")
     public String searchMovies(@RequestParam(name = "query", required = false) String query, Model model) {
         List<Movie> searchResults = movieService.searchByName(query);
-        List<Movie> allMovies = movieService.getAll();
-        List<Category> allCategories = categoryService.getAll(); // Replace with your actual category service
-        List<Actor> allActors = actorService.getAll(); // Replace with your actual actor service
+        List<Category> allCategories = categoryService.getAll();
+        List<Actor> allActors = actorService.getAll();
 
         model.addAttribute("pageTitle", "Movies");
         model.addAttribute("categories", allCategories);

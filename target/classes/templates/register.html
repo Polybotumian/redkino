@@ -6,13 +6,12 @@
     <div th:replace="~{externals/links::link}"></div>
     <title th:text="${pageTitle}"></title>
 </head>
+    <body>
+        <header>
+            <div th:replace="~{fragments/navbar::nav}"></div>
+        </header>
 
-<body>
-    <header>
-        <div th:replace="~{fragments/navbar::nav}"></div>
-    </header>
-
-    <div th:replace="~{fragments/registerForm::form}"></div>
-
-</body>
+        <div th:replace="~{fragments/registerForm::form}"></div>
+        <div th:replace="~{externals/scripts}"></div>
+    </body>
 </html>

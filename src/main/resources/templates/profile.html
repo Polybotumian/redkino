@@ -17,6 +17,6 @@
             <h4>Username : <span th:text="${#authentication.principal.name}"></span></h4>
             <h4>Roles : <span th:text="${#authentication.principal.getRoles()}"></span></h4>
         </div>
-
+        <div th:replace="~{externals/scripts}"></div>
     </body>
 </html>

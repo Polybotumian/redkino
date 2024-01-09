@@ -22,5 +22,12 @@ public class DirectorService {
     public List<Director> getAll() {
         return directorRepository.findAll();
     }
+    public void deleteById(Long id)
+    {
+        this.directorRepository.deleteById(id);
+    }
+    public List<Director> searchByName(String name) {
+        return this.directorRepository.searchByName(name);
+    }
 }
 

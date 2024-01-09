@@ -6,63 +6,73 @@
     <div th:replace="~{externals/links::link}"></div>
     <title th:text="${pageTitle}"></title>
 </head>
-<body>
-<header>
-    <div th:replace="~{fragments/navbar::nav}"></div>
-</header>
-<main>
-    <form id="searchForm" th:action="@{/users/search}" method="post">
-        <label for="searchInput">Search:</label>
-        <input type="text" id="searchInput" name="query" placeholder="Enter your search term">
+    <body>
+    <header>
+        <div th:replace="~{fragments/navbar::nav}"></div>
+    </header>
+    <main>
+        <form id="searchForm" th:action="@{/users/search}" method="post">
+            <label for="searchInput">Search:</label>
+            <input type="text" id="searchInput" name="query" placeholder="Enter your search term">
 
-        <button type="submit">Search</button>
-    </form>
+            <button class="btn btn-block" type="submit">Search</button>
+        </form>
 
-    <!-- Check if the user is authenticated and has the 'USER' or 'ADMIN' role -->
-    <div th:if="${#authorization.expression('isAuthenticated() and hasRole(''ROLE_ADMIN'')')}">
-        <button onclick="openAddUserDialog()">Add New User</button>
-    </div>
-    <!-- Add Movie Dialog -->
-    <div id="addUserDialog" class="modal">
-        <div>
-            <span class="close" onclick="closeAddUserDialog()">&times;</span>
-            <!-- Form to add a new movie -->
-            <form class="modal-content" id="addUserForm" th:action="@{/users/add}" method="post">
-                <!-- Add a hidden input field for the movie id -->
-                <label>User Name:</label>
-                <input type="text" th:name="name" placeholder="User Name" required/>
-
-                <label>E-Mail:</label>
-                <input type="email" th:name="email" required/>
-
-                <label>Password:</label>
-                <input type="text" th:name="password" th:value="*{password}" required/>
-
-                <label>Roles:</label>
-                <select multiple="multiple" th:name="roles" th:value="*{roles}" required>
-                    <!-- Iterate over categories and populate the options -->
-                    <option th:each="role : *{roles}" th:value="${role.id}" th:text="${role.name}"></option>
-                </select>
-
-                <button type="submit">Add</button>
-            </form>
+        <!-- Check if the user is authenticated and has the 'USER' or 'ADMIN' role -->
+        <div th:if="${#authorization.expression('isAuthenticated() and hasRole(''ROLE_ADMIN'')')}">
+            <button class="btn btn-block" onclick="openAddUserDialog()">Add New User</button>
         </div>
-    </div>
-    <!-- Movie gallery -->
-    <div class="movie-gallery" th:if="${users}">
-        <div th:each="user : ${users}">
-            <div class="movie-card" th:object="${user}">
-                <!-- Add movie details -->
-                <h4 th:text="*{name}"></h4>
-                <p th:text="*{email}"></p>
+        <!-- Add Movie Dialog -->
+        <div id="addUserDialog" class="modal">
+            <div>
+                <!-- Form to add a new movie -->
+                <form class="modal-content" id="addUserForm" th:action="@{/users/add}" method="post">
+                    <span class="close" onclick="closeAddUserDialog()">&times;</span>
+                    <!-- Add a hidden input field for the movie id -->
+                    <label>User Name:</label>
+                    <input type="text" th:name="name" placeholder="User Name" required/>
 
-                <div th:if="${#authorization.expression('isAuthenticated() and hasRole(''ROLE_ADMIN'')')}">
-                    <button th:onclick="'openUpdateUserDialog(' + *{id} + ')'">Update</button>
+                    <label>E-Mail:</label>
+                    <input type="email" th:name="email" required/>
+
+                    <label>Password:</label>
+                    <input type="text" th:name="password" th:value="*{password}" required/>
+
+                    <label>Roles:</label>
+                    <select multiple="multiple" th:name="roles" th:value="*{roles}" required>
+                        <!-- Iterate over categories and populate the options -->
+                        <option th:each="role : *{roles}" th:value="${role.id}" th:text="${role.name}"></option>
+                    </select>
+
+                    <button class="btn btn-block" type="submit">Add</button>
+                </form>
+            </div>
+        </div>
+        <!-- Movie gallery -->
+        <div class="item-gallery" th:if="${users}">
+            <div th:each="user : ${users}">
+                <div class="item-card" th:object="${user}">
+                    <!-- Add movie details -->
+                    <h4 th:text="*{name}"></h4>
+                    <p th:text="*{email}"></p>
+
+                    <div th:if="${#authorization.expression('isAuthenticated() and hasRole(''ROLE_ADMIN'')')}">
+                        <button class="btn btn-block" th:onclick="'openUpdateUserDialog(' + *{id} + ')'">Update</button>
+                        <br>
+                        <form th:action="@{/users/delete}" method="post">
+                            <input type="hidden" th:name="id" th:value="*{id}" />
+                            <button class="btn btn-block" type="submit">Delete</button>
+                        </form>
+                    </div>
+
+                </div>
+                <div th:object="${user}">
                     <div th:id="'updateUserDialog-' + *{id}" class="modal">
                         <div>
-                            <span class="close" th:onclick="'closeUpdateUserDialog(' + *{id} + ')'">&times;</span>
+
                             <form class="modal-content" th:id="'updateUserForm-' + *{id}" th:action="@{/users/update}" method="post">
                                 <!-- Add a hidden input field for the movie id -->
+                                <span class="close" th:onclick="'closeUpdateUserDialog(' + *{id} + ')'">&times;</span>
                                 <input hidden="hidden" th:name="id" th:value="*{id}"/>
 
                                 <label>User Name:</label>
@@ -80,39 +90,33 @@
                                             th:selected="${#lists.contains(roles, role)}"></option>
                                 </select>
 
-                                <button type="submit">Update</button>
+                                <button class="btn btn-block" type="submit">Update</button>
                             </form>
                         </div>
                     </div>
-                    <form th:action="@{/users/delete}" method="post">
-                        <input type="hidden" th:name="id" th:value="*{id}" />
-                        <button type="submit">Delete</button>
-                    </form>
                 </div>
 
             </div>
+            <div th:unless="${users}">
+                <p>No movies available.</p>
+            </div>
 
+            <script>
+                function openAddUserDialog() {
+                    document.getElementById('addUserDialog').style.display = 'block';
+                }
+                function closeAddUserDialog() {
+                    document.getElementById('addUserDialog').style.display = 'none';
+                }
+                function openUpdateUserDialog(movieId) {
+                    document.getElementById('updateUserDialog-' + movieId).style.display = 'block';
+                }
+                function closeUpdateUserDialog(movieId) {
+                    document.getElementById('updateUserDialog-' + movieId).style.display = 'none';
+                }
+            </script>
         </div>
-        <div th:unless="${users}">
-            <p>No movies available.</p>
-        </div>
-
-        <script>
-            function openAddUserDialog() {
-                document.getElementById('addUserDialog').style.display = 'block';
-            }
-            function closeAddUserDialog() {
-                document.getElementById('addUserDialog').style.display = 'none';
-            }
-            function openUpdateUserDialog(movieId) {
-                document.getElementById('updateUserDialog-' + movieId).style.display = 'block';
-            }
-            function closeUpdateUserDialog(movieId) {
-                document.getElementById('updateUserDialog-' + movieId).style.display = 'none';
-            }
-        </script>
-    </div>
-</main>
-
-</body>
+    </main>
+    <div th:replace="~{externals/scripts}"></div>
+    </body>
 </html>

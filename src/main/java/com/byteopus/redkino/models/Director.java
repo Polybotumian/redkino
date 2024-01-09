@@ -22,6 +22,10 @@ public class Director {
         return id;
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public String getName() {
         return name;
     }
@@ -44,5 +48,13 @@ public class Director {
 
     public void setImage(Byte[] image) {
         this.image = image;
+    }
+
+    public List<Movie> getMovies() {
+        return movies;
+    }
+
+    public void setMovies(List<Movie> movies) {
+        this.movies = movies;
     }
 }
