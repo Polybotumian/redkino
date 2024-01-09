@@ -16,8 +16,8 @@ public class DirectorService {
     public DirectorService(DirectorRepository directorRepository) {
         this.directorRepository = directorRepository;
     }
-    public void save(Director actor) {
-        directorRepository.save(actor);
+    public void save(Director director) {
+        directorRepository.save(director);
     }
     public List<Director> getAll() {
         return directorRepository.findAll();

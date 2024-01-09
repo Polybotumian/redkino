@@ -41,21 +41,21 @@ public class DirectorController {
     @PostMapping("/directors/add")
     public String addDirector(Director director, RedirectAttributes redirectAttributes) {
         directorService.save(director);
-        redirectAttributes.addFlashAttribute("successMessage", "Movie added successfully");
+        redirectAttributes.addFlashAttribute("successMessage", "Director added successfully");
         return "redirect:/directors";
     }
 
     @PostMapping("/directors/update")
     public String updateDirector(Director director, RedirectAttributes redirectAttributes) {
         directorService.save(director);
-        redirectAttributes.addFlashAttribute("successMessage", "Movie updated successfully");
+        redirectAttributes.addFlashAttribute("successMessage", "Director updated successfully");
         return "redirect:/directors";
     }
 
     @PostMapping("/directors/delete")
     public String deleteDirector(Long id, RedirectAttributes redirectAttributes) {
         directorService.deleteById(id);
-        redirectAttributes.addFlashAttribute("successMessage", "Movie deleted successfully");
+        redirectAttributes.addFlashAttribute("successMessage", "Director deleted successfully");
         return "redirect:/directors";
     }
 

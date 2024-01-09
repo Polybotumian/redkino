@@ -43,7 +43,7 @@ public class Movie {
     public void setActors(List<Actor> actors) {
         this.actors = actors;
     }
-    @ManyToMany
+    @ManyToMany(cascade = {CascadeType.ALL})
     @JoinTable(
             name = "movie_directors",
             joinColumns = @JoinColumn(name = "movie_id"),

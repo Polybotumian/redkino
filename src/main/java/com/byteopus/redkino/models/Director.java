@@ -15,7 +15,9 @@ public class Director {
     private String surname;
     @Lob
     private Byte[] image;
-    @ManyToMany(mappedBy = "directors")
+    @ManyToMany(mappedBy = "directors"
+            , cascade = CascadeType.ALL
+    )
     private List<Movie> movies = new ArrayList<>();
 
     public Long getId() {
