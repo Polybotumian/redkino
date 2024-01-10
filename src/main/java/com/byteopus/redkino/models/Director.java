@@ -8,6 +8,9 @@ import java.util.List;
 @Entity
 @Table(name = "directors")
 public class Director {
+    public Director() {
+
+    }
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -15,9 +18,7 @@ public class Director {
     private String surname;
     @Lob
     private Byte[] image;
-    @ManyToMany(mappedBy = "directors"
-            , cascade = CascadeType.ALL
-    )
+    @ManyToMany(mappedBy = "directors")
     private List<Movie> movies = new ArrayList<>();
 
     public Long getId() {

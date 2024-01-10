@@ -22,5 +22,12 @@ public class ActorService {
     public List<Actor> getAll() {
         return actorRepository.findAll();
     }
+    public void deleteById(Long id)
+    {
+        this.actorRepository.deleteById(id);
+    }
+    public List<Actor> searchByName(String name) {
+        return this.actorRepository.searchByName(name);
+    }
 }
 

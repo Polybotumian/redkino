@@ -1,4 +1,4 @@
-<form th:action="@{/login}" th:object="${user}" method="post">
+<form class="container" th:action="@{/login}" th:object="${user}" method="post">
     <!-- Email input -->
     <div data-mdb-input-init class="form-outline mb-4">
         <input type="email" id="email" class="form-control" placeholder="Your email address" th:field="*{email}" required/>
@@ -8,15 +8,8 @@
     <div data-mdb-input-init class="form-outline mb-4">
         <input type="password" id="password" class="form-control" placeholder="Password" th:field="*{password}" required/>
     </div>
-
-    <!-- 2 column grid layout for inline styling -->
-    <div class="row mb-4">
-        <div class="col">
-            <!-- Simple link -->
-            <a href="#!">Forgot password?</a>
-        </div>
-    </div>
-
     <!-- Submit button -->
-    <button data-mdb-ripple-init type="submit" class="btn btn-block">Login</button>
+    <div class="text-center">
+        <button data-mdb-ripple-init type="submit" class="btn">Login</button>
+    </div>
 </form>

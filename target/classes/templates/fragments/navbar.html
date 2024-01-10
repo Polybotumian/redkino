@@ -20,8 +20,11 @@
                 <li class="nav-item">
                     <a class="nav-link" th:href="@{/movies}">Movies</a>
                 </li>
-                <li th:if="${#authorization.expression('isAuthenticated()')}" class="nav-item">
-                    <a class="nav-link" th:href="@{/profile}">Profile</a>
+                <li th:if="${#authorization.expression('isAuthenticated() and hasRole(''ROLE_ADMIN'') or hasRole(''ROLE_USER'')')}" class="nav-item">
+                    <a class="nav-link" th:href="@{/categories}">Categories</a>
+                </li>
+                <li th:if="${#authorization.expression('isAuthenticated() and hasRole(''ROLE_ADMIN'') or hasRole(''ROLE_USER'')')}" class="nav-item">
+                    <a class="nav-link" th:href="@{/actors}">Actors</a>
                 </li>
                 <li th:if="${#authorization.expression('isAuthenticated() and hasRole(''ROLE_ADMIN'') or hasRole(''ROLE_USER'')')}" class="nav-item">
                     <a class="nav-link" th:href="@{/directors}">Directors</a>
@@ -40,6 +43,9 @@
                     </li>
                     <li th:if="!${#authorization.expression('isAuthenticated()')}" class="nav-item">
                         <a class="nav-link" th:href="@{/login}">Login</a>
+                    </li>
+                    <li th:if="${#authorization.expression('isAuthenticated()')}" class="nav-item">
+                        <a class="nav-link" th:href="@{/profile}">Profile</a>
                     </li>
                     <li th:if="${#authorization.expression('isAuthenticated()')}" class="nav-item">
                         <form th:action="@{/logout}" method="post">

@@ -59,6 +59,7 @@ body {
     background-color: #181818;
     width: 200px; /* Adjust the width as needed */
     overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 /* Add styles for other elements within the movie card if needed */

@@ -8,6 +8,9 @@ import java.util.List;
 @Entity
 @Table(name = "actors")
 public class Actor {
+    public Actor(){
+
+    }
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -20,6 +23,10 @@ public class Actor {
 
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -44,5 +51,13 @@ public class Actor {
 
     public void setImage(Byte[] image) {
         this.image = image;
+    }
+
+    public List<Movie> getMovies() {
+        return movies;
+    }
+
+    public void setMovies(List<Movie> movies) {
+        this.movies = movies;
     }
 }

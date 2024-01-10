@@ -1,4 +1,4 @@
-<form th:action="@{/register}" th:object="${user}" method="post">
+<form class="container me-auto" th:action="@{/register}" th:object="${user}" method="post">
     <!-- Email input -->
     <div data-mdb-input-init class="form-outline mb-4">
         <input type="email" id="email" class="form-control" placeholder="Your email address" th:field="*{email}" required/>
@@ -25,16 +25,14 @@
             <!-- Checkbox -->
             <div class="form-check">
                 <input class="form-check-input" type="checkbox" value="" id="checkboxAgreement" th:value="${agreement}" required/>
-                <label class="form-check-label" for="checkboxAgreement"> I agree </label>
+                <label class="form-check-label" for="checkboxAgreement"> I agree site politics</label>
             </div>
-        </div>
-
-        <div class="col">
-            <!-- Simple link -->
-            <a href="#!">Forgot password?</a>
         </div>
     </div>
 
     <!-- Submit button -->
-    <button data-mdb-ripple-init type="submit" class="btn btn-primary btn-block">Register</button>
+    <div class="text-center">
+        <button data-mdb-ripple-init type="submit" class="btn">Register</button>
+    </div>
+
 </form>

@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 
 @Entity
@@ -43,7 +44,7 @@ public class Movie {
     public void setActors(List<Actor> actors) {
         this.actors = actors;
     }
-    @ManyToMany(cascade = {CascadeType.ALL})
+    @ManyToMany
     @JoinTable(
             name = "movie_directors",
             joinColumns = @JoinColumn(name = "movie_id"),
@@ -59,7 +60,8 @@ public class Movie {
     private String name;
     private String summary;
     @Lob
-    private Byte[] image;
+    @Column(name = "image", columnDefinition = "LONGBLOB")
+    private byte[] image;
     private String path;
     private LocalDate releaseDate;
     private LocalDate uploadDate;
@@ -107,10 +109,10 @@ public class Movie {
     public void setLikes(Integer likes) {
         this.likes = likes;
     }
-    public Byte[] getImage() {
+    public byte[] getImage() {
         return image;
     }
-    public void setImage(Byte[] image) {
+    public void setImage(byte[] image) {
         this.image = image;
     }
 }

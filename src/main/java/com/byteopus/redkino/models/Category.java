@@ -18,6 +18,9 @@ public class Category {
     public Long getId() {
         return id;
     }
+    public void setId(Long id) {
+        this.id = id;
+    }
     public void setName(String name) {
         this.name = name;
     }
@@ -26,4 +29,12 @@ public class Category {
     }
     @ManyToMany(mappedBy = "categories")
     private List<Movie> movies = new ArrayList<>();
+
+    public List<Movie> getMovies() {
+        return movies;
+    }
+
+    public void setMovies(List<Movie> movies) {
+        this.movies = movies;
+    }
 }

@@ -11,6 +11,9 @@
             <div th:replace="~{fragments/navbar::nav}"></div>
         </header>
         <div th:replace="~{fragments/loginForm::form}"></div>
+        <div th:if="${successMessage}" class="alert alert-success">
+            <p th:text="${successMessage}"></p>
+        </div>
         <div th:replace="~{externals/scripts}"></div>
     </body>
 </html>

@@ -1,6 +1,7 @@
 package com.byteopus.redkino.services;
 
 import com.byteopus.redkino.models.Category;
+import com.byteopus.redkino.models.Director;
 import com.byteopus.redkino.repositories.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,6 +22,13 @@ public class CategoryService {
     }
     public List<Category> getAll() {
         return categoryRepository.findAll();
+    }
+    public void deleteById(Long id)
+    {
+        this.categoryRepository.deleteById(id);
+    }
+    public List<Category> searchByName(String name) {
+        return this.categoryRepository.searchByName(name);
     }
 }
 

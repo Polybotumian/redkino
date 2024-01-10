@@ -11,16 +11,16 @@
         <div th:replace="~{fragments/navbar::nav}"></div>
     </header>
     <main>
-        <form id="searchForm" th:action="@{/users/search}" method="post">
-            <label for="searchInput">Search:</label>
-            <input type="text" id="searchInput" name="query" placeholder="Enter your search term">
+        <div class="container">
+            <form id="searchForm" th:action="@{/users/search}" method="post">
+                <input type="text" id="searchInput" name="query" placeholder="...">
+                <button class="btn" type="submit">Search</button>
+            </form>
 
-            <button class="btn btn-block" type="submit">Search</button>
-        </form>
-
-        <!-- Check if the user is authenticated and has the 'USER' or 'ADMIN' role -->
-        <div th:if="${#authorization.expression('isAuthenticated() and hasRole(''ROLE_ADMIN'')')}">
-            <button class="btn btn-block" onclick="openAddUserDialog()">Add New User</button>
+            <!-- Check if the user is authenticated and has the 'USER' or 'ADMIN' role -->
+            <div th:if="${#authorization.expression('isAuthenticated() and hasRole(''ROLE_ADMIN'')')}">
+                <button class="btn" onclick="openAddUserDialog()">Add New User</button>
+            </div>
         </div>
         <!-- Add Movie Dialog -->
         <div id="addUserDialog" class="modal">
@@ -54,7 +54,11 @@
                 <div class="item-card" th:object="${user}">
                     <!-- Add movie details -->
                     <h4 th:text="*{name}"></h4>
-                    <p th:text="*{email}"></p>
+                    <p style="overflow: hidden; text-overflow: ellipsis;" th:text="*{email}"></p>
+                    <details>
+                        <summary>Roles</summary>
+                        <p th:each="role : *{roles}" th:text="${role}"></p>
+                    </details>
 
                     <div th:if="${#authorization.expression('isAuthenticated() and hasRole(''ROLE_ADMIN'')')}">
                         <button class="btn btn-block" th:onclick="'openUpdateUserDialog(' + *{id} + ')'">Update</button>
@@ -97,7 +101,7 @@
                 </div>
 
             </div>
-            <div th:unless="${users}">
+            <div th:if="${users.size()} == 0"">
                 <p>No movies available.</p>
             </div>
 
