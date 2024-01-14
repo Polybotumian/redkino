@@ -55,14 +55,22 @@ public class MovieController {
     }
 
     @PostMapping("/movies/add")
-    public String addMovie(Movie movie, RedirectAttributes redirectAttributes) {
-        movieService.save(movie);
-        redirectAttributes.addFlashAttribute("successMessage", "Movie added successfully");
+    public String addMovie(Movie movie, @RequestParam("imageFile") MultipartFile imageFile, RedirectAttributes redirectAttributes) {
+        try
+        {
+            movie.setImage(imageFile.getBytes());
+            movieService.save(movie);
+            redirectAttributes.addFlashAttribute("successMessage", "Movie added successfully");
+        }catch (IOException e)
+        {
+            redirectAttributes.addFlashAttribute("error", "Error processing the image file.");
+        }
+
         return "redirect:/movies";
     }
 
     @PostMapping("/movies/update")
-    public String updateMovie(Movie movie,  @RequestParam("imageFile") MultipartFile imageFile, RedirectAttributes redirectAttributes) {
+    public String updateMovie(Movie movie, @RequestParam("imageFile") MultipartFile imageFile, RedirectAttributes redirectAttributes) {
         try {
             movie.setImage(imageFile.getBytes());
             movieService.save(movie);
@@ -93,6 +101,7 @@ public class MovieController {
         model.addAttribute("actors", allActors);
         model.addAttribute("movies", searchResults);
         model.addAttribute("directors", allDirectors);
+        model.addAttribute("imgutil", new ImageUtil());
 
         return "/movies";
     }

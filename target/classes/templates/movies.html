@@ -31,7 +31,7 @@
             <!-- Add Movie Dialog -->
             <div id="addMovieDialog" class="modal">
                     <!-- Form to add a new movie -->
-                    <form class="modal-content" id="addMovieForm" th:action="@{/movies/add}" method="post">
+                    <form class="modal-content" id="addMovieForm" th:action="@{/movies/add}" method="post" enctype="multipart/form-data">
                         <span class="close" onclick="closeAddMovieDialog()">&times;</span>
                         <!-- Add a hidden input field for the movie id -->
                         <input type="text" th:name="name" placeholder="Movie Name" required/>
@@ -59,6 +59,11 @@
                             <option th:each="director : ${directors}" th:value="${director.id}" th:text="${director.name} + ' ' + ${director.surname}"></option>
                         </select>
 
+                        <div class="mb-4">
+                            <label>Image</label>
+                            <input type="file" name="imageFile" class="form-control" accept="image/*"/>
+                        </div>
+
                         <button type="submit" class="btn btn-block">Add</button>
                     </form>
             </div>
@@ -70,7 +75,7 @@
                         <!-- Add movie details -->
                         <h4 th:text="*{name}"></h4>
                         <p th:text="*{releaseDate}"></p>
-                        <img th:src="@{'data:image/png;base64,' + ${imgutil.GetImgString(movie.image)}}" alt="Movie Image">
+                        <img th:src="'data:image/png;base64,' + ${imgutil.getImgString(movie.image)}" alt="Movie Image" />
                         <details>
                             <summary>Summary</summary>
                             <p th:text="*{summary}"></p>

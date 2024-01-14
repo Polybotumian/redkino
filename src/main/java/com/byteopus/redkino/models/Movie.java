@@ -61,6 +61,7 @@ public class Movie {
     private String summary;
     @Lob
     @Column(name = "image", columnDefinition = "LONGBLOB")
+    @Basic(fetch = FetchType.EAGER)
     private byte[] image;
     private String path;
     private LocalDate releaseDate;
