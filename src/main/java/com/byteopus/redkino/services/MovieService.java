@@ -30,7 +30,6 @@ public class MovieService {
     public List<Movie> searchByName(String name) {
         return this.movieRepository.searchByName(name);
     }
-
     public Movie findById(Long movieId) {
         return this.movieRepository.findById(movieId).orElse(null);
     }

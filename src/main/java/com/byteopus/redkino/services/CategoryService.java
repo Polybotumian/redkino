@@ -2,6 +2,7 @@ package com.byteopus.redkino.services;
 
 import com.byteopus.redkino.models.Category;
 import com.byteopus.redkino.models.Director;
+import com.byteopus.redkino.models.Movie;
 import com.byteopus.redkino.repositories.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,6 +30,9 @@ public class CategoryService {
     }
     public List<Category> searchByName(String name) {
         return this.categoryRepository.searchByName(name);
+    }
+    public Category findById(Long categoryId) {
+        return this.categoryRepository.findById(categoryId).orElse(null);
     }
 }
 

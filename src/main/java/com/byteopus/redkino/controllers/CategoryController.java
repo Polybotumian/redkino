@@ -54,7 +54,17 @@ public class CategoryController {
 
     @PostMapping("/categories/delete")
     public String deleteCategory(Long id, RedirectAttributes redirectAttributes) {
+        Category selectedCategory = categoryService.findById(id);
+
+        // Remove associated entries in movie_categories
+        selectedCategory.getMovies().forEach(movie -> {
+            movie.getCategories().remove(selectedCategory);
+            movieService.save(movie);
+        });
+
+        // Now, delete the category
         categoryService.deleteById(id);
+
         redirectAttributes.addFlashAttribute("successMessage", "Category deleted successfully");
         return "redirect:/categories";
     }
@@ -67,7 +77,7 @@ public class CategoryController {
         model.addAttribute("pageTitle", "Categories");
         model.addAttribute("movies", allMovies);
         model.addAttribute("categories", searchResults);
-        return "/categories";
+        return "categories";
     }
 
 }

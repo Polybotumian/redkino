@@ -1,6 +1,7 @@
 package com.byteopus.redkino.controllers;
 
 import com.byteopus.redkino.models.Actor;
+import com.byteopus.redkino.models.Director;
 import com.byteopus.redkino.models.Movie;
 import com.byteopus.redkino.services.ActorService;
 import com.byteopus.redkino.services.MovieService;
@@ -54,8 +55,18 @@ public class ActorController {
 
     @PostMapping("/actors/delete")
     public String deleteActor(Long id, RedirectAttributes redirectAttributes) {
+        Actor selectedActor = actorService.findById(id);
+
+        // Remove associated entries in movie_categories
+        selectedActor.getMovies().forEach(movie -> {
+            movie.getActors().remove(selectedActor);
+            movieService.save(movie);
+        });
+
+        // Now, delete the category
         actorService.deleteById(id);
-        redirectAttributes.addFlashAttribute("successMessage", "Actor deleted successfully");
+
+        redirectAttributes.addFlashAttribute("successMessage", "Category deleted successfully");
         return "redirect:/actors";
     }
 
@@ -67,7 +78,7 @@ public class ActorController {
         model.addAttribute("pageTitle", "Actors");
         model.addAttribute("movies", allMovies);
         model.addAttribute("actors", searchResults);
-        return "/actors";
+        return "actors";
     }
 
 }

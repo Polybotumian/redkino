@@ -1,6 +1,7 @@
 package com.byteopus.redkino.services;
 
 import com.byteopus.redkino.models.Actor;
+import com.byteopus.redkino.models.Director;
 import com.byteopus.redkino.repositories.ActorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,6 +29,10 @@ public class ActorService {
     }
     public List<Actor> searchByName(String name) {
         return this.actorRepository.searchByName(name);
+    }
+
+    public Actor findById(Long actorId) {
+        return this.actorRepository.findById(actorId).orElse(null);
     }
 }
 

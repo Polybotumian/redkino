@@ -1,5 +1,6 @@
 package com.byteopus.redkino.services;
 
+import com.byteopus.redkino.models.Category;
 import com.byteopus.redkino.models.Director;
 import com.byteopus.redkino.repositories.DirectorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,9 @@ public class DirectorService {
     }
     public List<Director> searchByName(String name) {
         return this.directorRepository.searchByName(name);
+    }
+    public Director findById(Long directorId) {
+        return this.directorRepository.findById(directorId).orElse(null);
     }
 }
 

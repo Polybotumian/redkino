@@ -58,9 +58,11 @@ public class UserController {
 
     @PostMapping("/users/delete")
     public String deleteUser(Long id, RedirectAttributes redirectAttributes) {
+//        User selectedUser = userService.findById(id);
         userService.deleteById(id);
-        redirectAttributes.addFlashAttribute("successMessage", "User deleted successfully");
-        return "redirect:/users";
+
+        redirectAttributes.addFlashAttribute("successMessage", "Category deleted successfully");
+        return "redirect:/directors";
     }
 
     @PostMapping("/users/search")
